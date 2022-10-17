@@ -1,30 +1,47 @@
 package com.example.mapped_v6.ui.ui.settings;
 
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.mapped_v6.R;
+import com.example.mapped_v6.databinding.FragmentSettingsBinding;
+import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private String distMeasureSystem;
+    private RadioGroup distanceRg;
+    private RadioButton imperialRb, metricRb, measurementRb;
+    private Button btnSave;
+    private Spinner spLandMarkType;
+    private String gType;
+    private String[] gTypes;
+    private FragmentSettingsBinding binding;
+    private SettingsViewModel settingsViewModel;
+    private Spinner spLandMrkType;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -42,8 +59,7 @@ public class SettingsFragment extends Fragment {
     public static SettingsFragment newInstance(String param1, String param2) {
         SettingsFragment fragment = new SettingsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,15 +68,78 @@ public class SettingsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+        binding = FragmentSettingsBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //Firebase
+
+        imperialRb = (RadioButton) getView().findViewById(R.id.imperialRb);
+        metricRb = (RadioButton) getView().findViewById(R.id.metricRb);
+        distanceRg = (RadioGroup) getView().findViewById(R.id.distanceRg);
+
+
+
+        spLandMarkType = (Spinner) getView().findViewById(R.id.spLandMarkType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.landmarktypes, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spLandMarkType.setAdapter(adapter);
+        spLandMarkType.setOnItemSelectedListener(this);
+
+        gTypes = getContext().getResources().getStringArray(R.array.gtypes);
+        settingsInput();
+        btnSave = (Button) getView().findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settingsUpdate();
+            }
+        });
+
+
+    }
+
+
+
+    private void settingsUpdate() {
+        int distanceId = distanceRg.getCheckedRadioButtonId();
+        measurementRb = (RadioButton) getView().findViewById(distanceId);
+        //firebase
+        Toast.makeText(getContext(), "Your settings have been updated", Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void settingsInput() {
+        //firebase
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        gTypes = getContext().getResources().getStringArray(R.array.gtypes);
+        gType = gTypes[position];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
