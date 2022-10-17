@@ -16,7 +16,7 @@
             android:name=".navActivity"
             android:exported="false"
             android:label="@string/title_activity_nav"
-            android:theme="@style/Theme.Mapped_V6.NoActionBar">
+            android:theme="@style/Theme.Mapped_V6.DarkActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -24,6 +24,7 @@
         <activity
             android:name=".Users"
             android:exported="true">
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -45,7 +46,8 @@
 
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Mapped_V6.DarkActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
