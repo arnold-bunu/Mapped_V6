@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Login">
+    tools:context=".Login"
+    android:id="@+id/loginFragment">
 
     <ImageView
         android:id="@+id/imageView"
@@ -49,7 +50,7 @@
         android:hint="E-Mail"
         android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:text=""
+        android:text="tristan071@gmail.com"
         android:textColorHint="#1464F6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +65,7 @@
         android:hint="password"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        android:text="123qweasd"
         android:textColorHint="#1464F6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
