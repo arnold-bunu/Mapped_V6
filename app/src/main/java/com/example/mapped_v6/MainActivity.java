@@ -3,7 +3,9 @@ package com.example.mapped_v6;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,20 +17,15 @@ import ui.MapsFragment;
 
 public class MainActivity extends AppCompatActivity {
     Button btnTest;
-
+    MapsFragment MapsFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnTest = findViewById(R.id.btnTest);
 
-        btnTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               startActivity(new Intent(MainActivity.this, MapsFragment.class));
 
-            }
-        });
+
+
 
 
     }
