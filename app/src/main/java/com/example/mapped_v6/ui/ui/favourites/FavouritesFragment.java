@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 public class FavouritesFragment extends Fragment {
 
-    private  FavViewModel favViewModel;
+    private ui.favourites.FavViewModel favViewModel;
     private FragmentFavouritesBinding binding;
     private ListView listView;
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -97,7 +97,7 @@ public class FavouritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        favViewModel = new ViewModelProvider(this).get(FavViewModel.class);
+        favViewModel = new ViewModelProvider(this).get(ui.favourites.FavViewModel.class);
         binding = FragmentFavouritesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;

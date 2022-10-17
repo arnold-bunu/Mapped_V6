@@ -14,4 +14,36 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_favourites">Favourites</string>
     <string name="menu_logout">Log out</string>
+    <string-array name="landmarktypes">
+        <item>Historic</item>
+        <item>Modern</item>
+        <item>Popular</item>
+        <item>School</item>
+        <item>University</item>
+        <item>Club</item>
+        <item>ATM</item>
+        <item>Bank</item>
+        <item>Restaurant</item>
+        <item>Movie Theatre</item>
+        <item>Hospital</item>
+        <item>Retail Store</item>
+
+    </string-array>
+
+    <string-array name="gtypes">
+        <item>historic</item>
+        <item>modern</item>
+        <item>popular</item>
+        <item>school</item>
+        <item>university</item>
+        <item>club</item>
+        <item>atm</item>
+        <item>bank</item>
+        <item>restaurant</item>
+        <item>movie_theatre</item>
+        <item>hospital</item>
+        <item>retail_store</item>
+
+
+    </string-array>
 </resources>

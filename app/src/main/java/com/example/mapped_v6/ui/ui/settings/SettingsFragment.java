@@ -39,7 +39,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
     private String gType;
     private String[] gTypes;
     private FragmentSettingsBinding binding;
-    private SettingsViewModel settingsViewModel;
+    private ui.settings.SettingsViewModel settingsViewModel;
     private Spinner spLandMrkType;
 
 
@@ -75,7 +75,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+        settingsViewModel = new ViewModelProvider(this).get(ui.settings.SettingsViewModel.class);
         binding = FragmentSettingsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;
