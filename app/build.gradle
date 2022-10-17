@@ -7,6 +7,10 @@ android {
     namespace 'com.example.mapped_v6'
     compileSdk 32
 
+    dataBinding{
+        enable = true;
+    }
+
     defaultConfig {
         applicationId "com.example.mapped_v6"
         minSdk 30
