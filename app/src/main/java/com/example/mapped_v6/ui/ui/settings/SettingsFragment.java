@@ -23,6 +23,10 @@ import android.widget.Toast;
 import com.example.mapped_v6.R;
 import com.example.mapped_v6.databinding.FragmentSettingsBinding;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +34,13 @@ import com.google.android.gms.maps.SupportMapFragment;
  * create an instance of this fragment.
  */
 public class SettingsFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+
+
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference mDatabase = database.getReference("Users");
+    private String userId;
+    DatabaseReference databaseReference;
+    FirebaseDatabase firebaseDatabase;
 
     private String distMeasureSystem;
     private RadioGroup distanceRg;
@@ -69,6 +80,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
+
+
+
+
+
+
         }
     }
 
@@ -87,9 +104,15 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
         //Firebase
 
+
+
+
         imperialRb = (RadioButton) getView().findViewById(R.id.imperialRb);
         metricRb = (RadioButton) getView().findViewById(R.id.metricRb);
         distanceRg = (RadioGroup) getView().findViewById(R.id.distanceRg);
+
+
+
 
 
 
@@ -116,10 +139,16 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
 
     private void settingsUpdate() {
+
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
+        userId=user.getUid();
+
+
         int distanceId = distanceRg.getCheckedRadioButtonId();
         measurementRb = (RadioButton) getView().findViewById(distanceId);
+        mDatabase.child(userId).child("metricimprial").setValue(measurementRb.getText().toString());
         //firebase
-        Toast.makeText(getContext(), "Your settings have been updated", Toast.LENGTH_SHORT).show();
+
     }
 
 
@@ -136,6 +165,15 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         gTypes = getContext().getResources().getStringArray(R.array.gtypes);
         gType = gTypes[position];
+
+
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
+        userId=user.getUid();
+
+
+        mDatabase.child(userId).child("LandmarkType").setValue(gType);
+
+
     }
 
     @Override

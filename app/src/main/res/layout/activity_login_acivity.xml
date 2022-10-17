@@ -87,15 +87,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:autoLink="web"
+        android:linksClickable="true"
         android:text="Don't Have An Account?       Sign Up"
         android:textColor="#1464F6"
         android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogIn"
-        android:autoLink="web"
-        android:linksClickable="true"
-        />
+        app:layout_constraintVertical_bias="0.075" />
 
     <TextView
         android:id="@+id/textView3"
@@ -121,4 +123,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.308"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/demoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSignup" />
 </androidx.constraintlayout.widget.ConstraintLayout>
