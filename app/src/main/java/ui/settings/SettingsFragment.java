@@ -29,7 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment;
  * Use the {@link SettingsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SettingsFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class SettingsFragment extends Fragment implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
     private String distMeasureSystem;
     private RadioGroup distanceRg;
@@ -40,6 +40,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
     private String[] gTypes;
     private FragmentSettingsBinding binding;
     private SettingsViewModel settingsViewModel;
+    private Spinner spLandMrkType;
 
 
     public SettingsFragment() {
@@ -90,11 +91,17 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
         metricRb = (RadioButton) getView().findViewById(R.id.metricRb);
         distanceRg = (RadioGroup) getView().findViewById(R.id.distanceRg);
 
-        //landmark type
 
 
+        spLandMarkType = (Spinner) getView().findViewById(R.id.spLandMarkType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.landmarktypes, android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spLandMarkType.setAdapter(adapter);
+        spLandMarkType.setOnItemSelectedListener(this);
+
+        gTypes = getContext().getResources().getStringArray(R.array.gtypes);
         settingsInput();
-
         btnSave = (Button) getView().findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +109,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
                 settingsUpdate();
             }
         });
+
+
     }
+
 
 
     private void settingsUpdate() {
@@ -119,6 +129,17 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        gTypes = getContext().getResources().getStringArray(R.array.gtypes);
+        gType = gTypes[position];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
     }
 }
