@@ -5,10 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,7 +30,7 @@ public class FavouritesFragment extends Fragment {
 
     private  FavViewModel favViewModel;
     private FragmentFavouritesBinding binding;
-    private ListView FavLandmarksList;
+    private ListView listView;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter<String> arrayAdapter;
     private Favourites favourites;
@@ -59,17 +61,19 @@ public class FavouritesFragment extends Fragment {
     }
 
     private void createClickListen() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                //Favourites selectLandmark = (Favourites) (listView.getItemIdAtPosition(position));
+
+            }
+        });
     }
 
     private void createList() {
         if(getActivity()!=null) {
-            FavLandmarksList = (ListView) getView().findViewById(R.id.FavLandmarksList);
-
-
-            ////////////////////////
-
-
-
+            listView = (ListView) getView().findViewById(R.id.FavLandmarksList);
+            //LandmarkAdapter adapter = new LandmarkAdapter (getActivity(), 0, favouritesArrayList);
 
         }
     }
@@ -93,7 +97,9 @@ public class FavouritesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_favourites, container, false);
+        favViewModel = new ViewModelProvider(this).get(FavViewModel.class);
+        binding = FragmentFavouritesBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+        return root;
     }
 }
