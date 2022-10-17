@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragmentSignup"
+        android:name="com.example.mapped_v6.SignUp"/>
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
@@ -103,7 +109,6 @@
         android:layout_marginEnd="62dp"
         android:text="Have an account?"
         android:textColor="@color/black"
-        app:layout_constraintEnd_toStartOf="@+id/textView11"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnContinue" />

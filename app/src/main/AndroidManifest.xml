@@ -12,6 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Mapped_V6"
         tools:targetApi="31">
+        <activity
+            android:name=".Users"
+            android:exported="true">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
