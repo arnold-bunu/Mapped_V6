@@ -110,6 +110,8 @@
                 android:text=""
                 app:layout_constraintBaseline_toBaselineOf="@+id/placeInfoDistance"
                 app:layout_constraintStart_toEndOf="@+id/placeInfoDistance" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
