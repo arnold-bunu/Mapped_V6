@@ -128,9 +128,14 @@ public class Login extends Fragment  {
     }
 
     private void launchSignup() {
-
+        Intent intent = new Intent(getContext(), Registration.class);
+        startActivity(intent);
 
     }
+
+
+
+
 
 
     public void signIn(){
@@ -149,8 +154,7 @@ public class Login extends Fragment  {
       email=Email.getText().toString();
       password=Password.getText().toString();
 
-
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+      mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
