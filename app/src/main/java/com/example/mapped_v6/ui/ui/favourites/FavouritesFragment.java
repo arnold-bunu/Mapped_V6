@@ -1,4 +1,4 @@
-package ui.favourites;
+package com.example.mapped_v6.ui.ui.favourites;
 
 import android.os.Bundle;
 

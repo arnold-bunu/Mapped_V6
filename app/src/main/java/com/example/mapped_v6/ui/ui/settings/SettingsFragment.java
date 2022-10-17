@@ -1,4 +1,4 @@
-package ui.settings;
+package com.example.mapped_v6.ui.ui.settings;
 
 import android.os.Bundle;
 
