@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class LoginAcivity extends AppCompatActivity {
@@ -70,6 +72,7 @@ public class LoginAcivity extends AppCompatActivity {
               @Override
               public void onClick(View view) {
 
+                    openLandingPage();
               }
           });
 
@@ -78,8 +81,7 @@ public class LoginAcivity extends AppCompatActivity {
     private void signIn() {
         email=Email.getText().toString().trim();
         password=Password.getText().toString().trim();
-        Toast.makeText(this,
-                (email+password), Toast.LENGTH_SHORT).show();
+
 
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(LoginAcivity.this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -88,10 +90,11 @@ public class LoginAcivity extends AppCompatActivity {
                     Log.d(TAG,"signInComplete");
                     FirebaseUser user=mAuth.getCurrentUser();
                     updateUI(user);
+
                     openLandingPage();
                 } else{
                     Log.w(TAG,"signInFAILED",task.getException());
-                    Toast.makeText(LoginAcivity.this, "xxxxxxxxx", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginAcivity.this, "signInFAILED", Toast.LENGTH_SHORT).show();
                 }
             }
         });

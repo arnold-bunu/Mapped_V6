@@ -150,7 +150,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
         int distanceId = distanceRg.getCheckedRadioButtonId();
         measurementRb = (RadioButton) getView().findViewById(distanceId);
-        mDatabase.child(userId).child("metricimprial").setValue(measurementRb.getText().toString());
+        mDatabase.child(userId).child("metricImperial").child("").setValue(measurementRb.getText().toString());
         //firebase
 
     }
@@ -158,34 +158,41 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
     private void settingsInput() {
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        userId=user.getUid();
+        mDatabase=FirebaseDatabase.getInstance().getReference().child("Users/");
+
+
         //firebase
-//        mDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//        distMeasureSystem = snapshot.child("distMeasureSystem").getValue(String.class);
-//                if (distMeasureSystem.equals("Metric")) {
+        mDatabase.child("").child("").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    distMeasureSystem = snapshot.child("metricImperial").getValue(String.class);
+                if (distMeasureSystem.equals("metric")) {
 //                    metricRb.setChecked(true);
 //                    imperialRb.setChecked(false);
-//                } else {
+                    Toast.makeText(getActivity(), "1111", Toast.LENGTH_SHORT).show();
+
+                } else {
 //                    metricRb.setChecked(false);
 //                    imperialRb.setChecked(true);
-//                }
-//
-//                LandmarkType = snapshot.child("LandmarkType").getValue(String.class);
-//                for (int i = 0; i < gTypes.length; i++) {
-//                    if (LandmarkType.equals(gTypes[i])) {
-//                        spLandMarkType.setSelection(i);
-//                        break;
-//                    }
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
+                    Toast.makeText(getActivity(), "222", Toast.LENGTH_SHORT).show();
+                }
+
+                LandmarkType = snapshot.child("LandmarkType").getValue(String.class);
+                for (int i = 0; i < gTypes.length; i++) {
+                    if (LandmarkType.equals(gTypes[i])) {
+                        spLandMarkType.setSelection(i);
+                        break;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
 
     }
@@ -205,7 +212,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
         userId=user.getUid();
 
 
-        mDatabase.child(userId).child("LandmarkType").setValue(gType);
+        mDatabase.child(userId).child("LandmarkType").child("").setValue(gType);
 
 
     }
