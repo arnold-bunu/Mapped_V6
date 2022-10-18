@@ -238,7 +238,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         String key = "AIzaSyC1oUlRGEsbyJu-nUOWzLFwprHh4W41mac";
 
         String type = LandmarkType;
-        System.out.println(LandmarkType);
+
         String googlePlacesUrl =
                 "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
                         "location=" + lastlocation.getLatitude() + "," + lastlocation.getLongitude() +
@@ -334,6 +334,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         placeInformation.setVisibility(View.VISIBLE);
         placeName.setVisibility(View.VISIBLE);
         btnDirections.setVisibility(View.VISIBLE);
+        btnFavourites.setVisibility(View.VISIBLE);
 
         String placeID = "";
         ETA.setText("");
@@ -374,8 +375,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 lattt = marker.getPosition().latitude;
                 longg = marker.getPosition().longitude;
 
-                System.out.println(lattt );
-                System.out.println(longg);
+
                 showMeDaWay();
             }
         });
@@ -410,6 +410,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     }
 
     private void showMeDaWay() {
+        // map.clear();
         String url = PolyLinesss(starting, going);
         DownloadTask downloadTask = new DownloadTask();
         downloadTask.execute(url);

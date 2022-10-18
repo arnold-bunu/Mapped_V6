@@ -78,14 +78,7 @@ public class LoginAcivity extends AppCompatActivity {
         });
 
 
-          demobtn=findViewById(R.id.demoButton);
-          demobtn.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
 
-                    openLandingPage();
-              }
-          });
 
     }
 

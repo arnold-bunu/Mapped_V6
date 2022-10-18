@@ -59,6 +59,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
     private FragmentSettingsBinding binding;
     private ui.settings.SettingsViewModel settingsViewModel;
     private Spinner spLandMrkType;
+    private String test3;
+    private String test4;
 
 
     public SettingsFragment() {
@@ -159,7 +161,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
         mDatabase.child("Users/").child(userId).child("metricImperial").child("Type").setValue(measurementRb.getText().toString());
 
 
-        String test3=spLandMarkType.getSelectedItem().toString();
+       test3=spLandMarkType.getSelectedItem().toString();
 
 
 
@@ -230,12 +232,22 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
                 }
                 else{
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                    String test4=String.valueOf(task.getResult().getValue());
+                     test4=String.valueOf(task.getResult().getValue());
+
+                    for (int i = 0; i < gTypes.length; i++) {
+                        if (test4.equals(gTypes[i])) {
+                            spLandMarkType.setSelection(i);
+                            break;
+                        }
+                    }
+
 
                     Toast.makeText(getActivity(), "Current Preferred Landmark type: "+test4, Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+
 
 
 

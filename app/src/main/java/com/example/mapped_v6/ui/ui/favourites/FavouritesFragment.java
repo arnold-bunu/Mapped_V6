@@ -18,6 +18,13 @@ import android.widget.ListView;
 import com.example.mapped_v6.Favourites;
 import com.example.mapped_v6.R;
 import com.example.mapped_v6.databinding.FragmentFavouritesBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -37,6 +44,9 @@ public class FavouritesFragment extends Fragment {
     public static ArrayList<Favourites> favouritesArrayList = new ArrayList<Favourites>();
     private LinearLayout.LayoutParams params;
     private LinearLayout lm;
+    private String  userId;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference mDatabase = database.getReference("Users");
 
     public FavouritesFragment() {
         // Required empty public constructor
@@ -47,6 +57,10 @@ public class FavouritesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         //firebase
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+       userId = user.getUid();
+        mDatabase= FirebaseDatabase.getInstance().getReference();
+
 
         params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
@@ -55,7 +69,22 @@ public class FavouritesFragment extends Fragment {
 
     private void favouriteList() {
         //firebase
-        
+        mDatabase.child("Users/").child(userId).child("Favourites").get();
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Iterable<DataSnapshot> children = snapshot.getChildren();
+                for (DataSnapshot ds : children) {
+             //       Favourites favourites = ds.getValue(Favourites.class);
+                    favouritesArrayList.add(favourites);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         createList();
         createClickListen();
     }
@@ -64,7 +93,7 @@ public class FavouritesFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                //Favourites selectLandmark = (Favourites) (listView.getItemIdAtPosition(position));
+            //    Favourites selectLandmark = (Favourites) (listView.getItemIdAtPosition(position));
 
             }
         });
@@ -73,7 +102,8 @@ public class FavouritesFragment extends Fragment {
     private void createList() {
         if(getActivity()!=null) {
             listView = (ListView) getView().findViewById(R.id.FavLandmarksList);
-            //LandmarkAdapter adapter = new LandmarkAdapter (getActivity(), 0, favouritesArrayList);
+        //    LandmarkAdapter adapter = new LandmarkAdapter (getActivity(), 0, favouritesArrayList);
+            //listView.setAdapter(adapter);
 
         }
     }

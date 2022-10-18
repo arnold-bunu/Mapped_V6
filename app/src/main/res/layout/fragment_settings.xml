@@ -43,8 +43,8 @@
                 android:layout_width="118dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="22dp"
-                android:text="Imperial"
                 android:checked="true"
+                android:text="Imperial"
                 app:layout_constraintEnd_toStartOf="@+id/rbMetric"
                 app:layout_constraintHorizontal_bias="0.606"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,27 +95,15 @@
             app:layout_constraintTop_toBottomOf="@+id/spLandMarkType"
             app:layout_constraintVertical_bias="0.368" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/ic_baseline_menu_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
-            android:text="Measurement System"
+            android:layout_marginTop="16dp"
+            android:text="Choose your preffered measurement type"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
