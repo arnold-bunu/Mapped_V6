@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mapped_v6.JsonParser;
 import com.example.mapped_v6.R;
@@ -75,7 +76,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     FragmentContainerView fragmentContainerView;
     ConstraintLayout placeInformation;
    FragmentMapsBinding binding;
- Boolean locationPermissionGranted = false;
+ Boolean locationPermissionGranted = true;
      Button directionButton, favouriteButton;
     TextView placeInfoTitle, placeInfoDuration, placeInfoDistance;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -101,6 +102,9 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
+//            LatLng sydney = new LatLng(-34, 151);
+//            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
             if (locationPermissionGranted) {
                 if (ActivityCompat.checkSelfPermission(getContext(),
@@ -133,6 +137,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                             // Set the map's camera position to the current location of the device.
                             lastlocation = task.getResult();
                             if (lastlocation != null) {
+                                Toast.makeText(getActivity(), "xxxxx", Toast.LENGTH_SHORT).show();
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastlocation.getLatitude(),
                                                 lastlocation.getLongitude()), 15));
