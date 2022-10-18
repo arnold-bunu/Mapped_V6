@@ -137,7 +137,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                             // Set the map's camera position to the current location of the device.
                             lastlocation = task.getResult();
                             if (lastlocation != null) {
-                                Toast.makeText(getActivity(), "xxxxx", Toast.LENGTH_SHORT).show();
+
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastlocation.getLatitude(),
                                                 lastlocation.getLongitude()), 15));
@@ -161,19 +161,52 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     private void fetchSettings() {
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         userId=user.getUid();
-        mDatabase.child(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                distMeasureSystem = snapshot.child("distMeasureSystem").getValue(String.class);
-                LandmarkType = snapshot.child("LandmarkType").getValue(String.class);
-                nearbySearch();
-            }
+        mDatabase=FirebaseDatabase.getInstance().getReference();
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+        mDatabase.child(userId).child("metricImperial").child("Type");
+        String x = mDatabase.child(userId).child("metricImperial").toString();
 
+
+        mDatabase.child("Users").child(userId).child("metricImperial").child("Type").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+
+                }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+
+                    String test=String.valueOf(task.getResult().getValue());
+
+                    distMeasureSystem=test;
+
+                    Toast.makeText(getActivity(), test, Toast.LENGTH_SHORT).show();
+
+
+                }
             }
         });
+
+
+        mDatabase.child("Users").child(userId).child("LandmarkType").child("Landmark").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(!task.isSuccessful()){
+                    Log.e("firebase","error get data",task.getException());
+
+                }
+                else{
+                    Log.d("firebase",String.valueOf(task.getResult().getValue()));
+                    String test2=String.valueOf(task.getResult().getValue());
+                    LandmarkType=test2;
+                    Toast.makeText(getActivity(), test2, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+        nearbySearch();
 
     }
 
