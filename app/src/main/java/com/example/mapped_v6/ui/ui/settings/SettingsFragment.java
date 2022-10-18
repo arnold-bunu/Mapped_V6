@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,8 @@ import android.widget.Toast;
 import com.example.mapped_v6.R;
 import com.example.mapped_v6.databinding.FragmentSettingsBinding;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -115,6 +118,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
         metricRb = (RadioButton) getView().findViewById(R.id.metricRb);
         distanceRg = (RadioGroup) getView().findViewById(R.id.distanceRg);
 
+        imperialRb.isChecked();
 
 
 
@@ -129,6 +133,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
         gTypes = getContext().getResources().getStringArray(R.array.gtypes);
         settingsInput();
+
         btnSave = (Button) getView().findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,8 +155,21 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
         int distanceId = distanceRg.getCheckedRadioButtonId();
         measurementRb = (RadioButton) getView().findViewById(distanceId);
-        mDatabase.child(userId).child("metricImperial").child("").setValue(measurementRb.getText().toString());
-        //firebase
+
+        mDatabase.child("Users/").child(userId).child("metricImperial").child("Type").setValue(measurementRb.getText().toString());
+
+
+        String test3=spLandMarkType.getSelectedItem().toString();
+
+
+
+        mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").setValue(test3);
+        Toast.makeText(getActivity(), "settings Updated! ", Toast.LENGTH_SHORT).show();
+
+
+
+
+
 
     }
 
@@ -159,40 +177,66 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
     private void settingsInput() {
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         userId=user.getUid();
-        mDatabase=FirebaseDatabase.getInstance().getReference().child("Users/");
+        mDatabase=FirebaseDatabase.getInstance().getReference();
+
+        mDatabase.child(userId).child("metricImperial").child("Type");
+
+        String x = mDatabase.child(userId).child("metricImperial").toString();
 
 
-        //firebase
-        mDatabase.child("").child("").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("Users").child(userId).child("metricImperial").child("Type").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    distMeasureSystem = snapshot.child("metricImperial").getValue(String.class);
-                if (distMeasureSystem.equals("metric")) {
-//                    metricRb.setChecked(true);
-//                    imperialRb.setChecked(false);
-                    Toast.makeText(getActivity(), "1111", Toast.LENGTH_SHORT).show();
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
 
-                } else {
-//                    metricRb.setChecked(false);
-//                    imperialRb.setChecked(true);
-                    Toast.makeText(getActivity(), "222", Toast.LENGTH_SHORT).show();
                 }
+                else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
 
-                LandmarkType = snapshot.child("LandmarkType").getValue(String.class);
-                for (int i = 0; i < gTypes.length; i++) {
-                    if (LandmarkType.equals(gTypes[i])) {
-                        spLandMarkType.setSelection(i);
-                        break;
+                    String test=String.valueOf(task.getResult().getValue());
+                    String met="Metric";
+                    String imp="Imperial";
+
+
+                         if(test.equals(met)){
+
+
+                             Toast.makeText(getActivity(), "Chosen Distance unit: Metric ", Toast.LENGTH_SHORT).show();
                     }
+                         else if (test.equals(imp)){
+
+
+                             Toast.makeText(getActivity(), "Chosen Distance unit: Imperial ", Toast.LENGTH_SHORT).show();
+                    }
+                         else{
+
+                             Toast.makeText(getActivity(), "No Settings Detected! Please save", Toast.LENGTH_SHORT).show();
+                         }
+
                 }
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
+
+
+
+
+        mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()){
+                    Log.e("firebase", "Error getting data", task.getException());
+
+                }
+                else{
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    String test4=String.valueOf(task.getResult().getValue());
+
+                    Toast.makeText(getActivity(), "Current Preferred Landmark type: "+test4, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
 
 
     }
@@ -204,15 +248,15 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        gTypes = getContext().getResources().getStringArray(R.array.gtypes);
-        gType = gTypes[position];
-
-
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
-        userId=user.getUid();
-
-
-        mDatabase.child(userId).child("LandmarkType").child("").setValue(gType);
+//        gTypes = getContext().getResources().getStringArray(R.array.gtypes);
+//        gType = gTypes[position];
+//        String x=gType.toString();
+//        mDatabase=FirebaseDatabase.getInstance().getReference();
+//        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
+//        userId=user.getUid();
+//
+//
+//        mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").setValue(x);
 
 
     }
