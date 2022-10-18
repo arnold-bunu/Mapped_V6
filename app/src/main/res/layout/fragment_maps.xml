@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     tools:context=".MainActivity">
 
 
@@ -24,7 +23,8 @@
         android:layout_marginLeft="60dp"
         android:layout_marginBottom="10dp"
         android:layout_marginRight="60dp">
-        <fragment android:id="@+id/autocomplete_fragment"
+
+        <fragment android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"

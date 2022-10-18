@@ -25,8 +25,11 @@ import com.example.mapped_v6.databinding.FragmentSettingsBinding;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,6 +46,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
     FirebaseDatabase firebaseDatabase;
 
     private String distMeasureSystem;
+    String LandmarkType;
     private RadioGroup distanceRg;
     private RadioButton imperialRb, metricRb, measurementRb;
     private Button btnSave;
@@ -153,7 +157,37 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
 
     private void settingsInput() {
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
         //firebase
+//        mDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//        distMeasureSystem = snapshot.child("distMeasureSystem").getValue(String.class);
+//                if (distMeasureSystem.equals("Metric")) {
+//                    metricRb.setChecked(true);
+//                    imperialRb.setChecked(false);
+//                } else {
+//                    metricRb.setChecked(false);
+//                    imperialRb.setChecked(true);
+//                }
+//
+//                LandmarkType = snapshot.child("LandmarkType").getValue(String.class);
+//                for (int i = 0; i < gTypes.length; i++) {
+//                    if (LandmarkType.equals(gTypes[i])) {
+//                        spLandMarkType.setSelection(i);
+//                        break;
+//                    }
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
+
     }
 
     @Override
