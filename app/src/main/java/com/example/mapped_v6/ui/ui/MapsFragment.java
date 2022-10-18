@@ -67,6 +67,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -94,7 +95,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     private String LandmarkType;
     private final LatLng campus = new LatLng(-33.9728, 18.4695);
     AutocompleteSupportFragment autocomplete;
-    String ETAA, distance;
+   String ETAA = "", distance = "";
     Polyline mPolyline;
 
     private double lattt;
@@ -190,7 +191,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastlocation.getLatitude(),
                                                 lastlocation.getLongitude()), 15));
-                                 fetchSettings();
+                                fetchSettings();
                             }
                         } else {
 
@@ -208,27 +209,19 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     }
 
     private void fetchSettings() {
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        userId=user.getUid();
-        mDatabase=FirebaseDatabase.getInstance().getReference();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        userId = user.getUid();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()){
+                if (!task.isSuccessful()) {
 
-                }else {
+                } else {
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                    String test4=String.valueOf(task.getResult().getValue());
-                    Toast.makeText(getActivity(), "Current Preferred Landmark type: "+test4, Toast.LENGTH_LONG).show();
+                    String test4 = String.valueOf(task.getResult().getValue());
+                    Toast.makeText(getActivity(), "Current Preferred Landmark type: " + test4, Toast.LENGTH_LONG).show();
                     LandmarkType = test4;
-                    System.out.println("." +
-                            ".." +
-                            "." +
-                            "." +
-                            "." +
-                            ".");
-                    System.out.println(LandmarkType);
-                    System.out.println(test4);
                     nearbySearch();
 
                 }
@@ -239,17 +232,17 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
     private void nearbySearch() {
 
-
+        String key = "AIzaSyC1oUlRGEsbyJu-nUOWzLFwprHh4W41mac";
 
         String type = LandmarkType;
         System.out.println(LandmarkType);
         String googlePlacesUrl =
                 "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                        "location=" + lastlocation.getLatitude() + "," +lastlocation.getLongitude() +
+                        "location=" + lastlocation.getLatitude() + "," + lastlocation.getLongitude() +
                         "&radius=" + 5000 +
                         "&types=" + type +
                         "&sensor=true" +
-                        "&key=" + getString(R.string.google_api_key);
+                        "&key=" + key;
 
         String url = googlePlacesUrl.toString();
 
@@ -361,14 +354,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             public void onClick(View v) {
 
 
-
                 starting = new LatLng(lastlocation.getLatitude(), lastlocation.getLongitude());
                 going = new LatLng(marker.getPosition().latitude, marker.getPosition().longitude);
 
                 lattt = marker.getPosition().latitude;
                 longg = marker.getPosition().longitude;
 
-                System.out.println(lattt );
+                System.out.println(lattt);
                 System.out.println(longg);
                 showMeDaWay();
             }
@@ -384,13 +376,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
     private String PolyLinesss(LatLng starting, LatLng going) {
         String start = "origin=" + starting.latitude + "," + starting.longitude;
-         String end = "destination=" + lattt + "," + longg;
-       // String end = "destination=-33.969182,18.4731455";
+        String end = "destination=" + lattt + "," + longg;
+        // String end = "destination=-33.969182,18.4731455";
         String key = "AIzaSyC1oUlRGEsbyJu-nUOWzLFwprHh4W41mac";
         String output = "json";
 
 
-        String parameters = start + "&" + end + "&"  + "&key=" + key;
+        String parameters = start + "&" + end + "&" + "&key=" + key;
 
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
 
@@ -437,6 +429,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         }
         return data;
 
+
     }
 
     private void placeDetails(String placeID) {
@@ -448,6 +441,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         @Override
         protected String doInBackground(String... strings) {
             String data = null;
+
             try {
                 data = downloadUrl(strings[0]);
             } catch (IOException e) {
@@ -482,6 +476,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         reader.close();
 
         return data;
+
 
     }
 
@@ -598,13 +593,12 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 for (int j = 2; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
-                    System.out.println("i like cookies");
-                    System.out.println(point);
+
 
                     for (Map.Entry<String, String> set :
                             path.get(j).entrySet()) {
 
-                        // Printing all elements of a Map
+
                         System.out.println(set.getKey() + " = "
                                 + set.getValue());
                     }
@@ -624,10 +618,21 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             for (int i = lists.size() - 1; i < lists.size(); i++) {
                 List<HashMap<String, String>> path = lists.get(i);
                 for (int j = 0; j < path.size(); j++) {
+                   // HashMap<String, String> points = path.get(j);
                     placeInfoDistance.setVisibility(View.VISIBLE);
                     ETA.setVisibility(View.VISIBLE);
+
+
+                  //  distance = points.get("distance");
+                   // ETAA = points.get("duration");
                     placeInfoDistance.setText("Distance: " + distance);
                     ETA.setText("Duration: " + ETAA);
+
+
+
+                    System.out.println("icecream lekker ");
+                    System.out.println(ETAA);
+                    System.out.println(distance);
                 }
 
                 // Drawing polyline in the Google Map for the i-th route
