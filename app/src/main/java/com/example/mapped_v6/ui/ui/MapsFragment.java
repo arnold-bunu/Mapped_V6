@@ -380,7 +380,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
        // String end = "destination=-33.969182,18.4731455";
         String key = "AIzaSyC1oUlRGEsbyJu-nUOWzLFwprHh4W41mac";
         String output = "json";
-        // String units = "units="+
+
 
         String parameters = start + "&" + end + "&"  + "&key=" + key;
 
