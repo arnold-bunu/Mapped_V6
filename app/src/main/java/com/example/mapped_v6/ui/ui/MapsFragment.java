@@ -587,8 +587,19 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 List<HashMap<String, String>> path = lists.get(i);
 
                 // Fetching all the points in i-th route
-                for (int j = 0; j < path.size(); j++) {
+                for (int j = 2; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
+
+                    System.out.println("i like cookies");
+                    System.out.println(point);
+
+                    for (Map.Entry<String, String> set :
+                            path.get(j).entrySet()) {
+
+                        // Printing all elements of a Map
+                        System.out.println(set.getKey() + " = "
+                                + set.getValue());
+                    }
 
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
