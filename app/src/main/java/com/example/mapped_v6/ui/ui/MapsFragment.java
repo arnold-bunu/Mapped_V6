@@ -26,6 +26,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mapped_v6.Favourites;
 import com.example.mapped_v6.JsonParser;
 import com.example.mapped_v6.R;
 import com.example.mapped_v6.databinding.FragmentMapsBinding;
@@ -97,9 +98,11 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     AutocompleteSupportFragment autocomplete;
    String ETAA = "", distance = "";
     Polyline mPolyline;
-
+    private String placeID;
+    private String places;
     private double lattt;
     private double longg;
+    private String placeHolder;
 
     LatLng starting;
     LatLng going;
@@ -164,7 +167,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15));
 
                 placeIds.put(place.getName(), place.getId());
-
+                placeHolder=place.getName();
 
                 Marker marker = map.addMarker(
                         new MarkerOptions()
@@ -187,7 +190,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                             // Set the map's camera position to the current location of the device.
                             lastlocation = task.getResult();
                             if (lastlocation != null) {
-                                Toast.makeText(getActivity(), "xxxxx", Toast.LENGTH_SHORT).show();
+
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastlocation.getLatitude(),
                                                 lastlocation.getLongitude()), 15));
@@ -339,6 +342,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         for (Map.Entry<String, String> entry : placeIds.entrySet()) {
             if (entry.getKey().equals(marker.getTitle())) {
                 placeID = entry.getValue();
+                places=placeID;
             }
         }
         if (placeID.equals("")) {
@@ -348,10 +352,20 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         }
 
         placeName.setText(marker.getTitle());
+        btnFavourites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+
+                saveFav();
+
+
+            }
+        });
         btnDirections.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 
 
                 starting = new LatLng(lastlocation.getLatitude(), lastlocation.getLongitude());
@@ -360,12 +374,39 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 lattt = marker.getPosition().latitude;
                 longg = marker.getPosition().longitude;
 
-                System.out.println(lattt);
+                System.out.println(lattt );
                 System.out.println(longg);
                 showMeDaWay();
             }
         });
         return false;
+    }
+
+    private void saveFav() {
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
+        userId=user.getUid();
+
+         String placeName=placeHolder;
+         String placeID=places;
+
+
+
+
+
+        DatabaseReference usersRef = mDatabase.child(userId).child("Favourites").child("Location").child(placeName);
+
+        //MAKE  EQUAL TO WHATEVER VALUE YOU WANT INSERTED INTO THE JSON FILE IN REALTIME DATABASE
+
+        HashMap<String,String> userMap = new HashMap<>();
+
+        userMap.put("PlaceID",placeID);
+        userMap.put("Place Name:",placeName);
+
+        usersRef.push().setValue(userMap);
+
+        Toast.makeText(getActivity(), "Added Fav!", Toast.LENGTH_SHORT).show();
+
+
     }
 
     private void showMeDaWay() {
@@ -428,7 +469,6 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             urlConnection.disconnect();
         }
         return data;
-
 
     }
 
@@ -593,12 +633,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 for (int j = 2; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
-
+                    System.out.println("i like cookies");
+                    System.out.println(point);
 
                     for (Map.Entry<String, String> set :
                             path.get(j).entrySet()) {
 
-
+                        // Printing all elements of a Map
                         System.out.println(set.getKey() + " = "
                                 + set.getValue());
                     }
