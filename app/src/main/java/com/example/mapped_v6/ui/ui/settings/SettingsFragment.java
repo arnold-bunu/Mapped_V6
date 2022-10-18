@@ -118,6 +118,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
         metricRb = (RadioButton) getView().findViewById(R.id.metricRb);
         distanceRg = (RadioGroup) getView().findViewById(R.id.distanceRg);
 
+        imperialRb.isChecked();
 
 
 
@@ -132,6 +133,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
         gTypes = getContext().getResources().getStringArray(R.array.gtypes);
         settingsInput();
+
         btnSave = (Button) getView().findViewById(R.id.btnSave);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,8 +159,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
         mDatabase.child("Users/").child(userId).child("metricImperial").child("Type").setValue(measurementRb.getText().toString());
 
 
+        String test3=spLandMarkType.getSelectedItem().toString();
 
 
+
+        mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").setValue(test3);
+        Toast.makeText(getActivity(), "settings Updated! ", Toast.LENGTH_SHORT).show();
 
 
 
@@ -196,21 +202,41 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
                          if(test.equals(met)){
 
 
-                             Toast.makeText(getActivity(), "metric", Toast.LENGTH_SHORT).show();
+                             Toast.makeText(getActivity(), "Chosen Distance unit: Metric ", Toast.LENGTH_SHORT).show();
                     }
                          else if (test.equals(imp)){
 
 
-                             Toast.makeText(getActivity(), "imperial", Toast.LENGTH_SHORT).show();
+                             Toast.makeText(getActivity(), "Chosen Distance unit: Imperial ", Toast.LENGTH_SHORT).show();
                     }
                          else{
 
-                             Toast.makeText(getActivity(), "err", Toast.LENGTH_SHORT).show();
+                             Toast.makeText(getActivity(), "No Settings Detected! Please save", Toast.LENGTH_SHORT).show();
                          }
 
                 }
             }
         });
+
+
+
+
+        mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()){
+                    Log.e("firebase", "Error getting data", task.getException());
+
+                }
+                else{
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    String test4=String.valueOf(task.getResult().getValue());
+
+                    Toast.makeText(getActivity(), "Current Preferred Landmark type: "+test4, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
 
 
     }
@@ -222,15 +248,15 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        gTypes = getContext().getResources().getStringArray(R.array.gtypes);
-        gType = gTypes[position];
-        String x=gType.toString();
-        mDatabase=FirebaseDatabase.getInstance().getReference();
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
-        userId=user.getUid();
-
-
-        mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").setValue(x);
+//        gTypes = getContext().getResources().getStringArray(R.array.gtypes);
+//        gType = gTypes[position];
+//        String x=gType.toString();
+//        mDatabase=FirebaseDatabase.getInstance().getReference();
+//        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
+//        userId=user.getUid();
+//
+//
+//        mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").setValue(x);
 
 
     }

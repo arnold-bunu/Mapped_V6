@@ -101,6 +101,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
+            Toast.makeText(getActivity(), "Welcome!", Toast.LENGTH_SHORT).show();
             map = googleMap;
 //            LatLng sydney = new LatLng(-34, 151);
 //            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
@@ -181,7 +182,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
                     distMeasureSystem=test;
 
-                    Toast.makeText(getActivity(), test, Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(getActivity(), test, Toast.LENGTH_SHORT).show();
 
 
                 }
@@ -200,7 +201,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                     Log.d("firebase",String.valueOf(task.getResult().getValue()));
                     String test2=String.valueOf(task.getResult().getValue());
                     LandmarkType=test2;
-                    Toast.makeText(getActivity(), test2, Toast.LENGTH_SHORT).show();
+                //    Toast.makeText(getActivity(), test2, Toast.LENGTH_SHORT).show();
                 }
             }
         });

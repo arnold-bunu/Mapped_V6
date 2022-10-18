@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +30,7 @@ public class LoginAcivity extends AppCompatActivity {
     private String password;
     EditText Email;
     EditText Password;
+    TextView login;
     Button demobtn;
     Button btnLogIn;
     private String TAG="EmailPassword";
@@ -57,6 +59,15 @@ public class LoginAcivity extends AppCompatActivity {
         Email=findViewById(R.id.txtUsername);
         Password=findViewById(R.id.txtPassword);
 
+
+        login=findViewById(R.id.textSignup);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent (LoginAcivity.this, SignUpActivity.class);
+                startActivity(intent1);
+            }
+        });
 
         btnLogIn=findViewById(R.id.btnLogIn);
         btnLogIn.setOnClickListener(new View.OnClickListener() {
