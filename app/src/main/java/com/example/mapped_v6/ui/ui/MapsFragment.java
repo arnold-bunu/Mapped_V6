@@ -91,7 +91,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     private DatabaseReference mDatabase = database.getReference("Users");
     private String userId;
     private String distMeasureSystem;
-    String LandmarkType;
+    private String LandmarkType;
     private final LatLng campus = new LatLng(-33.9728, 18.4695);
     AutocompleteSupportFragment autocomplete;
     String ETAA, distance;
@@ -119,9 +119,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-//            LatLng sydney = new LatLng(-34, 151);
-//            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
 
             if (locationPermissionGranted) {
                 if (ActivityCompat.checkSelfPermission(getContext(),
@@ -192,7 +190,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                         new LatLng(lastlocation.getLatitude(),
                                                 lastlocation.getLongitude()), 15));
-                                //   fetchSettings();
+                                 fetchSettings();
                             }
                         } else {
 
@@ -210,19 +208,30 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     }
 
     private void fetchSettings() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        userId = user.getUid();
-        mDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+        userId=user.getUid();
+        mDatabase=FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("Users/").child(userId).child("LandmarkType").child("Landmark").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                distMeasureSystem = snapshot.child("distMeasureSystem").getValue(String.class);
-                LandmarkType = snapshot.child("LandmarkType").getValue(String.class);
-                nearbySearch();
-            }
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()){
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }else {
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    String test4=String.valueOf(task.getResult().getValue());
+                    Toast.makeText(getActivity(), "Current Preferred Landmark type: "+test4, Toast.LENGTH_LONG).show();
+                    LandmarkType = test4;
+                    System.out.println("." +
+                            ".." +
+                            "." +
+                            "." +
+                            "." +
+                            ".");
+                    System.out.println(LandmarkType);
+                    System.out.println(test4);
+                    nearbySearch();
 
+                }
             }
         });
 
@@ -231,17 +240,16 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     private void nearbySearch() {
 
 
-        String radius = "5000";
-        String type = LandmarkType;
 
-        StringBuilder googlePlacesUrl =
-                new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        googlePlacesUrl.append("location=").append(lastlocation.getLatitude())
-                .append(",").append(lastlocation.getLongitude());
-        googlePlacesUrl.append("&radius=").append(radius);
-        googlePlacesUrl.append("&types=").append(type);
-        googlePlacesUrl.append("&sensor=true");
-        googlePlacesUrl.append("&key=" + (R.string.google_maps_key));
+        String type = LandmarkType;
+        System.out.println(LandmarkType);
+        String googlePlacesUrl =
+                "https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                        "location=" + lastlocation.getLatitude() + "," +lastlocation.getLongitude() +
+                        "&radius=" + 5000 +
+                        "&types=" + type +
+                        "&sensor=true" +
+                        "&key=" + getString(R.string.google_api_key);
 
         String url = googlePlacesUrl.toString();
 
