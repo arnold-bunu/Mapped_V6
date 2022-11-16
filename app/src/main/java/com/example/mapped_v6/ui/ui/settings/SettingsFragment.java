@@ -56,11 +56,13 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
     private Spinner spLandMarkType;
     private String gType;
     private String[] gTypes;
+    private String[] landmarktypes;
     private FragmentSettingsBinding binding;
     private ui.settings.SettingsViewModel settingsViewModel;
     private Spinner spLandMrkType;
     private String test3;
     private String test4;
+    private String test5;
 
 
     public SettingsFragment() {
@@ -128,12 +130,13 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
 
         spLandMarkType = (Spinner) getView().findViewById(R.id.spLandMarkType);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.landmarktypes, android.R.layout.simple_spinner_dropdown_item);
+                R.array.gtypes, android.R.layout.simple_spinner_dropdown_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spLandMarkType.setAdapter(adapter);
         spLandMarkType.setOnItemSelectedListener(this);
 
         gTypes = getContext().getResources().getStringArray(R.array.gtypes);
+        landmarktypes = getContext().getResources().getStringArray(R.array.landmarktypes);
         settingsInput();
 
         btnSave = (Button) getView().findViewById(R.id.btnSave);
@@ -233,7 +236,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemClic
                 else{
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                      test4=String.valueOf(task.getResult().getValue());
-
                     for (int i = 0; i < gTypes.length; i++) {
                         if (test4.equals(gTypes[i])) {
                             spLandMarkType.setSelection(i);
