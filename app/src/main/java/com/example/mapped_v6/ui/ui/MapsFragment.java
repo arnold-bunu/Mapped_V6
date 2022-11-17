@@ -110,7 +110,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     LatLng starting;
     LatLng going;
 
-    public static int FoundLocations=0;
+    public static int FoundLocations=1;
 
 
     // VARIABLES USED TO GET LANDMARKS NEAR THE USERS LOCATION
@@ -129,7 +129,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
 
-            discovered();
+
             if (locationPermissionGranted) {
                 if (ActivityCompat.checkSelfPermission(getContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
@@ -345,7 +345,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         ETA.setVisibility(View.VISIBLE);
 
 
-
+        discovered();
 
 
 
@@ -408,7 +408,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
         userId=user.getUid();
-        DatabaseReference usersRef = mDatabase.child("/Users").child(userId).child("Places Discovered");
+
 
 
 
@@ -420,14 +420,16 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
                 }
                 else {
+                    Log.d("111", String.valueOf(task.getResult().getValue()));
 
-                      String number=String.valueOf(task.getResult().getValue());
+                       String number=String.valueOf(task.getResult().getValue());
 
 
-//                      int placement= Integer.parseInt(number);
-//                      FoundLocations=placement;
+                          int placement= Integer.parseInt(number);
+                          FoundLocations=placement;
+                          found();
+                    Log.v("tintn11", number, task.getException());
 
-                    Log.v("tintn", number, task.getException());
                 }}});
 
 
@@ -437,7 +439,8 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
     private void found() {
 
-        int i = FoundLocations + 1;
+        FoundLocations++;
+        int i = FoundLocations;
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
         userId=user.getUid();
 
@@ -743,8 +746,8 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                         Log.d(TAG, "onPostExecute: " + pointz.get("duration"));
                         distance = pointzz.get("distance");
                         ETAA = pointz.get("duration");
-                        placeInfoDistance.setText("Distance: " + distance);
-                        ETA.setText("Duration: " +ETAA);
+                        placeInfoDistance.setText( distance);
+                        ETA.setText(ETAA);
 
 
                         System.out.println("icecream lekker ");

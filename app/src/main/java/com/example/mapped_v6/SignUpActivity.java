@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -26,7 +28,8 @@ public class SignUpActivity extends AppCompatActivity {
     private Button register;
     private CheckBox checktnc;
     private static final String TAG = "EmailPassword";
-
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference mDatabase = database.getReference("Users");
     EditText Name;
     EditText Surname;
     EditText Email;
@@ -107,6 +110,10 @@ public class SignUpActivity extends AppCompatActivity {
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
+
+                            String userId=user.getUid();
+
+                            mDatabase.child(userId).child("Places Discovered").child("Number Found").setValue(0);
                             Toast.makeText(SignUpActivity.this, "Please Navigate to Settings Page before using the application ", Toast.LENGTH_LONG).show();
                             openLandingPage();
 
