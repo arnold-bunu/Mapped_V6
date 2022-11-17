@@ -156,12 +156,12 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         autocomplete.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onError(@NonNull Status status) {
-
+                Toast.makeText(getActivity(), "err 41 " , Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                Log.i("MapsFragment", "Place: " + place.getName() + ", " + place.getId() +
+                Log.v("MapsFragment", "Place: " + place.getName() + ", " + place.getId() +
                         ", " + place.getLatLng() + ", " + place.getTypes() +
                         ", " + place.getWebsiteUri() + ", " + place.getPhotoMetadatas());
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15));
@@ -386,7 +386,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
         userId=user.getUid();
 
-         String placeName=placeHolder;
+         String placeName="1";
          String placeID=places;
 
 
