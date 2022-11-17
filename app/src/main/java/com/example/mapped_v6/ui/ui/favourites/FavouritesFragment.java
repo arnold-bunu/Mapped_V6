@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.example.mapped_v6.Favourites;
+import com.example.mapped_v6.LandmarkAdapter;
 import com.example.mapped_v6.R;
 import com.example.mapped_v6.databinding.FragmentFavouritesBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -69,13 +70,13 @@ public class FavouritesFragment extends Fragment {
 
     private void favouriteList() {
         //firebase
-        mDatabase.child("Users/").child(userId).child("Favourites").get();
+        mDatabase.child(userId).child("Favourites").get();
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Iterable<DataSnapshot> children = snapshot.getChildren();
                 for (DataSnapshot ds : children) {
-             //       Favourites favourites = ds.getValue(Favourites.class);
+                   Favourites favourites = ds.getValue(Favourites.class);
                     favouritesArrayList.add(favourites);
                 }
             }
@@ -93,7 +94,7 @@ public class FavouritesFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-            //    Favourites selectLandmark = (Favourites) (listView.getItemIdAtPosition(position));
+           //    Favourites selectLandmark = (Favourites) (listView.getItemIdAtPosition(position));
 
             }
         });
@@ -102,8 +103,8 @@ public class FavouritesFragment extends Fragment {
     private void createList() {
         if(getActivity()!=null) {
             listView = (ListView) getView().findViewById(R.id.FavLandmarksList);
-        //    LandmarkAdapter adapter = new LandmarkAdapter (getActivity(), 0, favouritesArrayList);
-            //listView.setAdapter(adapter);
+            LandmarkAdapter adapter = new LandmarkAdapter (getActivity(), 0, favouritesArrayList);
+            listView.setAdapter(adapter);
 
         }
     }

@@ -232,6 +232,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
                 }
             }
+
         });
 
     }
@@ -394,6 +395,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
          String placeName=placeHolder;
          String placeID=places;
+
 
 
 
