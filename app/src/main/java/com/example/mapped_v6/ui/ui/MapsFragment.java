@@ -1,5 +1,7 @@
 package com.example.mapped_v6.ui.ui;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -11,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.AsyncQueryHandler;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -229,6 +232,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
                 }
             }
+
         });
 
     }
@@ -335,6 +339,9 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         placeName.setVisibility(View.VISIBLE);
         btnDirections.setVisibility(View.VISIBLE);
         btnFavourites.setVisibility(View.VISIBLE);
+        placeInfoDistance.setVisibility(View.VISIBLE);
+        ETA.setVisibility(View.VISIBLE);
+
 
         String placeID = "";
         ETA.setText("");
@@ -388,6 +395,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
          String placeName="1";
          String placeID=places;
+
 
 
 
@@ -617,6 +625,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             return routes;
         }
 
+        @SuppressLint({"RestrictedApi", "SetTextI18n"})
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> lists) {
             ArrayList<LatLng> points = null;
@@ -659,22 +668,24 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             }
             for (int i = lists.size() - 1; i < lists.size(); i++) {
                 List<HashMap<String, String>> path = lists.get(i);
-                for (int j = 0; j < path.size(); j++) {
-                   // HashMap<String, String> points = path.get(j);
-                    placeInfoDistance.setVisibility(View.VISIBLE);
-                    ETA.setVisibility(View.VISIBLE);
+                for (int j = 0; j < 2; j++) {
+                    HashMap<String, String> pointz = path.get(j);
+                    for (int k = 0; k < 1; k++) {
+                        HashMap<String, String> pointzz = path.get(k);
 
 
-                  //  distance = points.get("distance");
-                   // ETAA = points.get("duration");
-                    placeInfoDistance.setText("Distance: " + distance);
-                    ETA.setText("Duration: " + ETAA);
+                        Log.d(TAG, "onPostExecute: " + pointzz.get("distance"));
+                        Log.d(TAG, "onPostExecute: " + pointz.get("duration"));
+                        distance = pointzz.get("distance");
+                        ETAA = pointz.get("duration");
+                        placeInfoDistance.setText("Distance: " + distance);
+                        ETA.setText("Duration: " +ETAA);
 
 
-
-                    System.out.println("icecream lekker ");
-                    System.out.println(ETAA);
-                    System.out.println(distance);
+                        System.out.println("icecream lekker ");
+                        System.out.println(ETAA);
+                        System.out.println(distance);
+                    }
                 }
 
                 // Drawing polyline in the Google Map for the i-th route
