@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,8 @@ import com.example.mapped_v6.Favourites;
 import com.example.mapped_v6.LandmarkAdapter;
 import com.example.mapped_v6.R;
 import com.example.mapped_v6.databinding.FragmentFavouritesBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,7 +52,8 @@ public class FavouritesFragment extends Fragment {
     private String  userId;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference mDatabase = database.getReference("Users");
-
+    private ListView saveListView;
+    private ArrayList <String> arrayList1= new ArrayList<>();
     public FavouritesFragment() {
         // Required empty public constructor
     }
@@ -70,23 +75,46 @@ public class FavouritesFragment extends Fragment {
 
     private void favouriteList() {
         //firebase
-        mDatabase.child(userId).child("Favourites").get();
-        mDatabase.addValueEventListener(new ValueEventListener() {
+
+        mDatabase.child("/Users").child(userId).child("Favourites").child("").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Iterable<DataSnapshot> children = snapshot.getChildren();
-                for (DataSnapshot ds : children) {
-                   Favourites favourites = ds.getValue(Favourites.class);
-                    favouritesArrayList.add(favourites);
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+
                 }
-            }
+                else {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-        createList();
+                    for (DataSnapshot snap : task.getResult().getChildren()) {
+
+
+                        String Names= snap.getKey().toString();
+
+                        arrayList1.add(Names);
+
+
+
+                    }
+
+                    ListView lvHomePage = (ListView) getActivity().findViewById(R.id.FavLandmarksList);
+
+
+                    lvHomePage.setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1 , arrayList1));
+                }}});
+
+
+
+
+
+
+
+
+
+
+
+
+                    createList();
         createClickListen();
     }
 

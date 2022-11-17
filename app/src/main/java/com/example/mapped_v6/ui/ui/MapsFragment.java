@@ -110,6 +110,8 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
     LatLng starting;
     LatLng going;
 
+    public static int FoundLocations=0;
+
 
     // VARIABLES USED TO GET LANDMARKS NEAR THE USERS LOCATION
     Map<String, String> placeIds = new HashMap<String, String>();
@@ -127,7 +129,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
 
-
+            discovered();
             if (locationPermissionGranted) {
                 if (ActivityCompat.checkSelfPermission(getContext(),
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(),
@@ -343,6 +345,13 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         ETA.setVisibility(View.VISIBLE);
 
 
+
+
+
+
+
+
+
         String placeID = "";
         ETA.setText("");
         placeInfoDistance.setText("");
@@ -357,8 +366,9 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
             Toast.makeText(getContext(), "Place not found", Toast.LENGTH_SHORT).show();
         } else {
             placeDetails(placeID);
-        }
 
+        }
+        placeHolder=marker.getTitle();
         placeName.setText(marker.getTitle());
         btnFavourites.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -386,14 +396,69 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
                 showMeDaWay();
             }
         });
+
+
+
         return false;
+    }
+
+    private void discovered() {
+
+
+
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
+        userId=user.getUid();
+        DatabaseReference usersRef = mDatabase.child("/Users").child(userId).child("Places Discovered");
+
+
+
+        mDatabase.child("Users").child(userId).child("Places Discovered").child("Number Found").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+
+                }
+                else {
+
+                      String number=String.valueOf(task.getResult().getValue());
+
+
+//                      int placement= Integer.parseInt(number);
+//                      FoundLocations=placement;
+
+                    Log.v("tintn", number, task.getException());
+                }}});
+
+
+
+
+    }
+
+    private void found() {
+
+        int i = FoundLocations + 1;
+        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
+        userId=user.getUid();
+
+        String locales= String.valueOf(i);
+        DatabaseReference usersRef = mDatabase.child("/Users").child(userId).child("Places Discovered");
+
+
+        HashMap<String,String> number = new HashMap<>();
+        number.put("Number Found",locales);
+        usersRef.setValue(number);
+
+
+
+        Toast.makeText(getContext(), "New Location Unlocked, Total locations: "+i, Toast.LENGTH_SHORT).show();
     }
 
     private void saveFav() {
         FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();;
         userId=user.getUid();
 
-         String placeName="1";
+         String placeName=placeHolder;
          String placeID=places;
 
 
@@ -401,7 +466,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
 
 
-        DatabaseReference usersRef = mDatabase.child(userId).child("Favourites").child("Location").child(placeName);
+        DatabaseReference usersRef = mDatabase.child("/Users").child(userId).child("Favourites").child(placeName);
 
         //MAKE  EQUAL TO WHATEVER VALUE YOU WANT INSERTED INTO THE JSON FILE IN REALTIME DATABASE
 
@@ -412,7 +477,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
 
         usersRef.push().setValue(userMap);
 
-        Toast.makeText(getActivity(), "Added Fav!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Added Favourite!", Toast.LENGTH_SHORT).show();
 
 
     }
