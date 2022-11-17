@@ -339,7 +339,7 @@ public class MapsFragment extends Fragment implements GoogleMap.OnMarkerClickLis
         String placeID = "";
         ETA.setText("");
         placeInfoDistance.setText("");
-
+//
         for (Map.Entry<String, String> entry : placeIds.entrySet()) {
             if (entry.getKey().equals(marker.getTitle())) {
                 placeID = entry.getValue();
